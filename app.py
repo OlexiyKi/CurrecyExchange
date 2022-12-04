@@ -53,9 +53,17 @@ def currency_converter():
                                cur_exchange_buy=cur_exchange_buy,
                                cur_exchange_sale=cur_exchange_sale,
                                user_currency_1=user_currency_1,
-                               user_currency_2=user_currency_2
+                               user_currency_2=user_currency_2,
+                               user_bank=user_bank,
+                               user_date=user_date
+
                                )
     else:
         """ используем GET чтоб отправить форму в момент перехода по урлу?  """
         return render_template('data_form.html')
+
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)
 

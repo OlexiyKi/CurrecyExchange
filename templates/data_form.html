@@ -16,6 +16,8 @@
 <form action = '/currency' method="post">
     <label for="bank_id">Bank:</label><br>
     <select id="bank_id" name="bank">
+         <!-- значение по умолчанию -- последний клиентский ввод -->
+        <option selected value = "{{user_bank}}">{{user_bank}}</option>
         <option value = "A1">A1</option>
         <option value = "Privat">PrivatBank</option>
         <option value = "MONOBANK">MONOBANK</option>
@@ -24,7 +26,8 @@
     <label for="currency_id_1">Base currency:</label><br>
     <!-- select id= формируем выпадающий список -->
     <select id="currency_id_1" name="currency_1">
-        <option selected = "UAH">UAH</option>
+        <option selected value = "{{user_currency_1}}">{{user_currency_1}}</option>
+        <option value = "UAH">UAH</option>
         <option value = "USD">USD</option>
         <option value = "EUR">EUR</option>
         <option value = "GPB">GPB</option>
@@ -32,14 +35,15 @@
 
     <label for="currency_id_2">Exchange currency:</label><br>
     <select id="currency_id_2" name="currency_2">
+        <option selected value= "{{user_currency_2}}">{{user_currency_2}}</option>
         <option value = "UAH">UAH</option>
-        <option selected value = "USD">USD</option>
+        <option value = "USD">USD</option>
         <option value = "EUR">EUR</option>
         <option value = "GPB">GPB</option>
     </select><br>
 
     <label for="date_id">Date:</label><br>
-    <input type="date" id="date_id" name="date"><br>
+    <input type="date" id="date_id" name="date" value="{{user_date}}"><br>
 
     <!-- кнопка для сабмита -->
     <input type="submit" value="Submit">
