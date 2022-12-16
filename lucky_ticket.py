@@ -3,6 +3,7 @@ from threading import Thread
 from multiprocessing import Process
 
 
+
 def count_lucky_ticket(start, end):
     """считаем к-во возможных счастливых билетов"""
     count = 0
