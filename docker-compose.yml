@@ -1,0 +1,40 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+    command: python3 app.py
+    depends_on:
+      - rabbitmq_container
+    environment:
+      - RABBIT_HOST=rabbitmq_container
+
+  rabbitmq_container:
+    image: "rabbitmq:3.11-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    hostname: rabbitmq_container
+
+  celery_worker:
+    build: .
+    command: celery -A celery_working worker --loglevel=INFO
+    depends_on:
+      - rabbitmq_container
+    environment:
+      - RABBIT_HOST=rabbitmq_container
+
+  celery_beat:
+    build: .
+    command: celery -A celery_working beat --loglevel=info
+    depends_on:
+      - rabbitmq_container
+    environment:
+      - RABBIT_HOST=rabbitmq_container
+
+
+
+ #запускать celery_worker без -B?
+# to run $ sudo docker compose up -d
+#hostname: rabbitmq_container
