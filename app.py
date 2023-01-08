@@ -2,6 +2,9 @@ from flask import Flask, request, render_template
 import sqlite3
 from database_funcsion import DBManager
 from celery_working import add
+import al_db
+import models_db
+from sqlalchemy import select
 
 app = Flask(__name__)
 
@@ -9,6 +12,11 @@ app = Flask(__name__)
 @app.route('/', methods=['POST', 'GET'])
 def login_user():
     if request.method == 'GET':
+        conn = al_db.engine.connect()
+        res1 = select([models_db.User])
+        result = conn.execute(res1)
+        data_res = result.fetchall()
+        print(result)
         pass
     else:
         pass
