@@ -61,7 +61,7 @@ select * from public.currency
     <connections>
       <connection id="e2faf7af-059b-4ed8-890a-464bac5d97da" active="true" signed="true">
         <database>
-          <name value="currency_db_conn" />
+          <name value="my_database" />
           <description value="" />
           <database-type value="POSTGRES" />
           <config-type value="BASIC" />
@@ -70,7 +70,7 @@ select * from public.currency
           <driver-library value="" />
           <driver value="" />
           <url-type value="DATABASE" />
-          <host value="localhost" />
+          <host value="127.0.0.1" />
           <port value="5432" />
           <database value="currency_db" />
           <type value="USER_PASSWORD" />

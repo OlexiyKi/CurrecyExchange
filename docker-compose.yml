@@ -9,7 +9,7 @@ services:
       - rabbitmq_container
     environment:
       - RABBIT_HOST=rabbitmq_container
-      - DB_HOST=pg_db_container
+      - DB_HOST=pgdb_container
       - DB_USER=postgres
       - DB_PASSWORD=postgres
 
@@ -27,7 +27,9 @@ services:
       - rabbitmq_container
     environment:
       - RABBIT_HOST=rabbitmq_container
-      - DB_HOST=pg_db_container
+      - DB_HOST=pgdb_container
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
 
   celery_beat:
     build: .
@@ -36,7 +38,7 @@ services:
       - rabbitmq_container
     environment:
       - RABBIT_HOST=rabbitmq_container
-      - DB_HOST=pg_db_container
+      - DB_HOST=pgdb_container
       - DB_USER=postgres
       - DB_PASSWORD=postgres
 
@@ -45,9 +47,10 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
     ports:
       - '5432:5432'
-    hostname: pg_db_container
+    hostname: pgdb_container
 
 
  #запускать celery_worker без -B?
