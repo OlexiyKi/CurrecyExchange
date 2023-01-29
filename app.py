@@ -5,19 +5,16 @@ from celery_working import add
 import al_db
 import models_db
 from sqlalchemy import select
-
+from sqlalchemy.orm import Session
+import os
 app = Flask(__name__)
 
 
 @app.route('/', methods=['POST', 'GET'])
 def login_user():
     if request.method == 'GET':
-        conn = al_db.engine.connect()
-        res1 = select([models_db.User])
-        result = conn.execute(res1)
-        data_res = result.fetchall()
-        print(result)
-        pass
+
+        return 'Ok'
     else:
         pass
     return '<p>login!</p>'
@@ -43,9 +40,18 @@ def currency_converter():
         user_currency_1 = request.form['currency_1']
         user_currency_2 = request.form['currency_2']
 
-        with DBManager() as db:
-            buy_rate_1, sale_rate_1 = db.get_result(f'SELECT buy_rate, sale_rate FROM currency WHERE bank="{user_bank}" AND date_exchange="{user_date}" AND currency="{user_currency_1}"')
-            buy_rate_2, sale_rate_2 = db.get_result(f'SELECT buy_rate, sale_rate FROM currency WHERE bank="{user_bank}" AND date_exchange="{user_date}" AND currency="{user_currency_2}"')
+        with Session(al_db.engine) as session:
+            statement_1 = select(models_db.Currency).filter_by(bank = user_bank, currency = user_currency_1,
+                                                               date_exchange = user_date)
+            currency_1 = session.scalars(statement_1).first()
+            statement_2 = select(models_db.Currency).filter_by(bank=user_bank, currency=user_currency_2,
+                                                               date_exchange=user_date)
+            currency_2 = session.scalars(statement_2).first()
+
+
+        buy_rate_1, sale_rate_1 = currency_1.buy_rate, currency_1.sale_rate
+
+        buy_rate_2, sale_rate_2 = currency_2.buy_rate, currency_2.sale_rate
 
         cur_exchange_buy = round(buy_rate_2 / buy_rate_1, 2)
         cur_exchange_sale = round(sale_rate_2 / sale_rate_1, 2)
