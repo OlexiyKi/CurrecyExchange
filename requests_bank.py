@@ -9,7 +9,7 @@ def get_PrivatBank_data():
 
     r = requests.get(f'https://api.privatbank.ua/p24api/exchange_rates?json&date={current_date}')
     currency_info = r.json()
-
+    print(currency_info)
     purchaseRate_USD = 0
     saleRate_USD = 0
     for c in currency_info['exchangeRate']:
@@ -28,7 +28,7 @@ def get_PrivatBank_data():
         session.add(record)
 
         for c in currency_info['exchangeRate']:
-            if c.get('saleRate') and c.get('currency') != 'USD':
+            if c.get('saleRate'):
                 currency_name = c['currency']
                 purchaseRate_currency = round((c['purchaseRate'] / purchaseRate_USD), 2)
                 saleRate_currency = round((c['saleRate'] / saleRate_USD), 2)
@@ -73,7 +73,15 @@ def get_Monobank_data():
                     buy_rate = round(1 / purchaseRate_USD, 3),
                     sale_rate = round(1 / saleRate_USD, 3)
                 )
+                rec2 = models_db.Currency(
+                    bank='MONOBANK',
+                    currency='USD',
+                    date_exchange=current_date_base,
+                    buy_rate=1,
+                    sale_rate=1
+                )
                 session.add(rec)
+                session.add(rec2)
                 session.commit()
         for currency, iso_currency in currency_dict.items():
             for cur in currency_info:
@@ -109,4 +117,4 @@ def get_Monobank_data():
 
 
 #get_PrivatBank_data()
-#get_Monobank_data()
+# get_Monobank_data()

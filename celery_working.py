@@ -17,7 +17,7 @@ app = Celery('celery_working', broker= f'pyamqp://guest@{rabbit_host}//')
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     #calls func every 10 sec
-    sender.add_periodic_task(10.0, get_bank_data_task.s(), name='add every 10')
+    sender.add_periodic_task(43200.0, get_bank_data_task.s(), name='add every 10')
 
 
 # @app.task

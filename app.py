@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template
 import sqlite3
 from database_funcsion import DBManager
-from celery_working import add
 import al_db
 import models_db
 from sqlalchemy import select
@@ -22,7 +21,7 @@ def login_user():
 
 @app.route('/logout', methods=['GET'])
 def logout_user():
-    add.apply_async(args= (1, 2))
+
     return '<p>logout!</p>'
 
 
@@ -53,8 +52,8 @@ def currency_converter():
 
         buy_rate_2, sale_rate_2 = currency_2.buy_rate, currency_2.sale_rate
 
-        cur_exchange_buy = round(buy_rate_2 / buy_rate_1, 2)
-        cur_exchange_sale = round(sale_rate_2 / sale_rate_1, 2)
+        cur_exchange_buy = round(buy_rate_2 / buy_rate_1, 3)
+        cur_exchange_sale = round(sale_rate_2 / sale_rate_1, 3)
 
         return render_template('data_form.html',
                                cur_exchange_buy=cur_exchange_buy,
