@@ -47,6 +47,8 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - TZ=GMT+2
+      - PGTZ=GMT+2
 
     ports:
       - '5432:5432'
