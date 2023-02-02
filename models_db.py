@@ -19,3 +19,20 @@ class Currency(Base):
 
     def __repr__(self):
         return f'<Currency {self.name!r}>'
+
+
+
+class User(Base):
+       __tablename__ = 'users'
+       id = Column(Integer, primary_key=True, unique=True)
+       username = Column(String(50))
+       password = Column(String(50))
+       email = Column(String(50))
+
+       def __int__(self, username, password, email):
+           self.username = username
+           self.password = password
+           self.email = email
+
+       def __repr__(self):
+           return f'<User {self.username!r}>'

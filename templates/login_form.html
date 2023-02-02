@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>registration form</title>
+</head>
+<h2> Please fill this form to login: </h2>
+<body>
+<br>
+<h1>
+    {% if log_result == "go_to_register" %}
+    "{{user_username}}" is not exist. Please, register or check your username
+    {% elif log_result == "success" %}
+    Hello, "{{user_username}}"!
+    {% elif log_result == "unsuccess" %}
+    Password is wrong for "{{user_username}}". Please, try again.
+    {% endif %}
+
+</h1>
+<br>
+<br>
+<hr>
+<form action='/' method="post">
+
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter username" name="username" id="username" required>
+    <br><br>
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+    <br><br><br>
+    <input type="submit" value="Submit">
+
+    <hr>
+
+</form>
+</body>
+</html>

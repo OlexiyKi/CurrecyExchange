@@ -11,12 +11,29 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def login_user():
-    if request.method == 'GET':
+    if request.method == 'POST':
+        user_username = request.form['username']
+        user_psw = request.form['psw']
 
-        return 'Ok'
+        with Session(al_db.engine) as session:
+            statement = select(models_db.User).filter_by(username=user_username)
+            username = session.scalars(statement).first()
+            if username is None:
+                return render_template('login_form.html',
+                                       user_username=user_username,
+                                       log_result="go_to_register")
+            else:
+                if username.password == user_psw:
+                    return render_template('login_form.html',
+                                           user_username=user_username,
+                                           log_result="success")
+                else:
+                    return render_template('login_form.html',
+                                           user_username=user_username,
+                                           log_result="unsuccess")
+
     else:
-        pass
-    return '<p>login!</p>'
+        return render_template('login_form.html')
 
 
 @app.route('/logout', methods=['GET'])
@@ -27,7 +44,37 @@ def logout_user():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_user():
-    return '<p>registration form</p>'
+    if request.method == 'POST':
+        user_username = request.form['username']
+        user_email = request.form['email']
+        user_psw = request.form['psw']
+
+        with Session(al_db.engine) as session:
+            statement = select(models_db.User).filter_by(username = user_username)
+            username = session.scalars(statement).first()
+            if username is not None:
+                if username.username == user_username:
+                    return render_template('registration_form.html',
+                                       user_username=user_username,
+                                       username = username)
+
+            else:
+                flag = False
+                record = models_db.User(
+                    username = user_username,
+                    email = user_email,
+                    password = user_psw
+                )
+                session.add(record)
+                session.commit()
+                return render_template('registration_form.html',
+                                       user_username=user_username,
+                                       username=username
+                                       )
+
+    else:
+        return render_template('registration_form.html')
+
 
 
 @app.route('/currency', methods=['GET', 'POST'])
