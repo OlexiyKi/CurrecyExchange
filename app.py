@@ -5,8 +5,13 @@ import al_db
 import models_db
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-import os
+from flask import session as flask_session
+#from flask.ext.session import Session as FlaskSession
+
+
+
 app = Flask(__name__)
+app.secret_key = 'supersecret'
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -24,9 +29,12 @@ def login_user():
                                        log_result="go_to_register")
             else:
                 if username.password == user_psw:
+                    flask_session['username'] = user_username
                     return render_template('login_form.html',
                                            user_username=user_username,
-                                           log_result="success")
+                                           log_result="success",
+                                           username=flask_session['username'])
+
                 else:
                     return render_template('login_form.html',
                                            user_username=user_username,
@@ -37,9 +45,11 @@ def login_user():
 
 
 @app.route('/logout', methods=['GET'])
-def logout_user():
+def logout():
+    # remove the username from the session if it's there
+    flask_session.pop('username', None)
+    return  "<p>logout</p>"
 
-    return '<p>logout!</p>'
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -113,13 +123,17 @@ def currency_converter():
                                )
     else:
         """ используем GET чтоб отправить форму в момент перехода по урлу?  """
-        return render_template('data_form.html')
+        if 'username' in flask_session:
+            return render_template('data_form.html')
+        return 'You have to login for begin'
 
 
 
 @app.route('/user_page', methods=['GET'])
-def user_access():
-    return 'more function'
+def index():
+    if 'username' in flask_session:
+        return f'Logged in as {flask_session["username"]}'
+    return 'You are not logged in'
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
