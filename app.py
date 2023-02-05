@@ -41,7 +41,11 @@ def login_user():
                                            log_result="unsuccess")
 
     else:
-        return render_template('login_form.html')
+        if 'username' in flask_session:
+            return render_template('login_form.html')
+        else:
+            return 'You have to login for begin'
+
 
 
 @app.route('/logout', methods=['GET'])
